@@ -3,14 +3,18 @@ const bcrypt = require("bcryptjs");
 
 function findBy(filter) {
   return db("users")
-    .select("*")
-    .where(filter);
+    .where(filter)
+    .select("*");
 }
 
 async function registerUser(user) {
   user.password = await bcrypt.hash(user.password, 14);
-  const [id] = await db("users").insert(user);
-  return findBy(id);
+  await db("users").insert(user);
+  const newUser = await db("users")
+    .select("*")
+    .where("username", user.username)
+    .first();
+  return newUser;
 }
 
 module.exports = {

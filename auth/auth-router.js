@@ -7,7 +7,7 @@ const secret = require("./secret");
 router.post("/register", async (req, res, next) => {
   // implement registration
   try {
-    res.status(200).json(await userModel.registerUser(req.body));
+    res.status(201).json(await userModel.registerUser(req.body));
   } catch (err) {
     next(err);
   }
