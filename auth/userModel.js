@@ -9,12 +9,8 @@ function findBy(filter) {
 
 async function registerUser(user) {
   user.password = await bcrypt.hash(user.password, 14);
-  await db("users").insert(user);
-  const newUser = await db("users")
-    .select("*")
-    .where("username", user.username)
-    .first();
-  return newUser;
+  const [id] = await db("users").insert(user);
+  return findBy({ id }).first();
 }
 
 module.exports = {
